@@ -1,2 +1,16 @@
 .vs
 .idea
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.tlog
+*.lastbuildstate
+*.vcxproj.FileListAbsolute.txt
+*.pdb
+*.log
+*.ipdb
+*.iobj
+*.obj
+*.recipe
+*.exe
