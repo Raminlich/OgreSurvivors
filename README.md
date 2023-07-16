@@ -1,1 +1,3 @@
 # OgreSurvivors
+Required libraries :
+-fmt
