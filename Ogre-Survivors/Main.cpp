@@ -1,48 +1,60 @@
 #include "Ogre.h"
 #include "OgreApplicationContext.h"
-#include "OgreInput.h"
-#include "OgreRTShaderSystem.h"
-#include <iostream>
 
 using namespace Ogre;
 using namespace OgreBites;
 using namespace RTShader;
 
-int main()
+
+class BaseWindow : public ApplicationContext
 {
-    ApplicationContext ctx("Ogre-Survivors");
-    ctx.initApp();
+private:
+public:
+    BaseWindow();
+    virtual ~BaseWindow() {}
+    void setup();
+    SceneManager* sceneManager;
 
-    Root* root = ctx.getRoot();
-    SceneManager* sceneManager = root->createSceneManager();
+};
 
+
+BaseWindow::BaseWindow() : ApplicationContext("Ogre")
+{
+}
+
+void BaseWindow::setup()
+{
+    ApplicationContext::setup();
+    Root* root = getRoot();
+    sceneManager = root->createSceneManager();
     ShaderGenerator* shadergen = ShaderGenerator::getSingletonPtr();
     shadergen->addSceneManager(sceneManager);
 
-    sceneManager->setAmbientLight(ColourValue(0.5, 0.5, 0.5));
-
-    Light* light = sceneManager->createLight("MainLight");
-    SceneNode* lightNode = sceneManager->getRootSceneNode()->createChildSceneNode();
-    lightNode->attachObject(light);
-    lightNode->setPosition(20, 80, 50);
-
-    
     Camera* mainCamera = sceneManager->createCamera("MainCamera");
     mainCamera->setNearClipDistance(5);
+    mainCamera->setFarClipDistance(0);
     mainCamera->setAutoAspectRatio(true);
     SceneNode* mainCameraNode = sceneManager->getRootSceneNode()->createChildSceneNode();
     mainCameraNode->attachObject(mainCamera);
-    mainCameraNode->setPosition(0, 0, 140);
-
-
-    Entity* ogreHeadMesh = sceneManager->createEntity("ogrehead.mesh");
-    SceneNode* ogreMeshNode = sceneManager->getRootSceneNode()->createChildSceneNode();
-    ogreMeshNode->attachObject(ogreHeadMesh);
-
-    ctx.getRenderWindow()->addViewport(mainCamera);
-
-
-    return 0;
+    mainCameraNode->setPosition(0, 0, 10);
+    getRenderWindow()->addViewport(mainCamera);
+    sceneManager->setAmbientLight(ColourValue(0, 0, 0));
+    sceneManager->setShadowTechnique(ShadowTechnique::SHADOWTYPE_STENCIL_ADDITIVE);
+    Light* directionalLight = sceneManager->createLight("DirectionalLight");
+    directionalLight->setType(Light::LT_DIRECTIONAL);
+    directionalLight->setDiffuseColour(ColourValue::White);
+    directionalLight->setSpecularColour(0, 0, 0);
+    SceneNode* dirLightNode = sceneManager->getRootSceneNode()->createChildSceneNode();
+    dirLightNode->setDirection(Vector3(0, 0, 0));
+    dirLightNode->attachObject(directionalLight);
 }
 
-//! [fullsource]
+int main()
+{
+
+    BaseWindow baseWindow;
+    baseWindow.initApp();
+    baseWindow.getRoot()->startRendering();
+    baseWindow.closeApp();
+    return 0;
+}
