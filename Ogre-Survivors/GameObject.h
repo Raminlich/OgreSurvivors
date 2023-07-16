@@ -11,5 +11,8 @@ public:
     bool frameStarted(const Ogre::FrameEvent& event);
     void initObjectState();
     void updateObjectState();
+private:
+    Ogre::String name;
+    Ogre::SceneNode* node;
 };
 

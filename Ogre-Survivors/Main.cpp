@@ -1,5 +1,6 @@
 #include "Ogre.h"
 #include "OgreApplicationContext.h"
+#include "GameObject.h"
 
 using namespace Ogre;
 using namespace OgreBites;
@@ -47,11 +48,12 @@ void BaseWindow::setup()
     SceneNode* dirLightNode = sceneManager->getRootSceneNode()->createChildSceneNode();
     dirLightNode->setDirection(Vector3(0, 0, 0));
     dirLightNode->attachObject(directionalLight);
+    GameObject* redCube = new GameObject(sceneManager, "RedCube");
+    root->addFrameListener(redCube);
 }
 
 int main()
 {
-
     BaseWindow baseWindow;
     baseWindow.initApp();
     baseWindow.getRoot()->startRendering();
