@@ -48,8 +48,12 @@ void BaseWindow::setup()
     SceneNode* dirLightNode = sceneManager->getRootSceneNode()->createChildSceneNode();
     dirLightNode->setDirection(Vector3(0, 0, 0));
     dirLightNode->attachObject(directionalLight);
-    GameObject* redCube = new GameObject(sceneManager, "RedCube");
-    root->addFrameListener(redCube);
+    //GameObject* redCube = new GameObject(sceneManager, "RedCube");
+    Ogre::SceneNode* attachmentNode = sceneManager->getRootSceneNode()->createChildSceneNode();
+
+    // Set the desired resource group first and then load the Scene
+    attachmentNode->loadChildren("Sample.scene");
+
 }
 
 int main()
