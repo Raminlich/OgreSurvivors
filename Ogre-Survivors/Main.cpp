@@ -51,7 +51,6 @@ void BaseWindow::setup()
     GameObject* redCube = new GameObject(sceneManager, "RedCube");
     Ogre::SceneNode* attachmentNode = sceneManager->getRootSceneNode()->createChildSceneNode();
     root->addFrameListener(redCube);
-    // Set the desired resource group first and then load the Scene
     //attachmentNode->loadChildren("Sample.scene");
 
 }
