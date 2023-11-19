@@ -1,5 +1,5 @@
 ﻿#include "GameObject.h"
-#include "fmt/format.h"
+//#include "fmt/format.h"
 using namespace Ogre;
 using namespace std;
 
@@ -23,7 +23,7 @@ bool GameObject::frameStarted(const Ogre::FrameEvent& event)
 
 void GameObject::initObjectState()
 {
-	cout << fmt::format("Object init state : {0}",this->name) << endl;
+	//cout << fmt::format("Object init state : {0}",this->name) << endl;
 }
 
 void GameObject::updateObjectState()
