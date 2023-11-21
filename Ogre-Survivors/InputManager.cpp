@@ -17,11 +17,11 @@ void InputManager::CalculateMoveInput()
 	}
 	else if(m_RightInput->IsHold())
 	{
-		m_MoveInput.x = 1;
+		m_MoveInput.x = -1;
 	}
 	else if(m_LeftInput->IsHold())
 	{
-		m_MoveInput.x = -1;
+		m_MoveInput.x = 1;
 	}
 	else
 	{
@@ -35,11 +35,11 @@ void InputManager::CalculateMoveInput()
 	}
 	else if (m_UpInput->IsHold())
 	{
-		m_MoveInput.y = -1;
+		m_MoveInput.y = 1;
 	}
 	else if (m_DownInput->IsHold())
 	{
-		m_MoveInput.y = 1;
+		m_MoveInput.y = -1;
 	}
 	else
 	{

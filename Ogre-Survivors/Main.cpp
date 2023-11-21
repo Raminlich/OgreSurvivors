@@ -50,7 +50,7 @@ void BaseWindow::setup()
     mainCamera->setAutoAspectRatio(true);
     SceneNode *mainCameraNode = sceneManager->getRootSceneNode()->createChildSceneNode();
     mainCameraNode->attachObject(mainCamera);
-    mainCameraNode->setPosition(0, 0 , 300);
+    mainCameraNode->setPosition(0, 0 , -300);
     mainCameraNode->lookAt(Ogre::Vector3(0, 0, 0), Ogre::Node::TransformSpace::TS_WORLD);
     getRenderWindow()->addViewport(mainCamera);
     sceneManager->setAmbientLight(ColourValue(0, 0, 0));
