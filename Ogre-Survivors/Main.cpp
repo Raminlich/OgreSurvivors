@@ -1,7 +1,10 @@
 #include "Ogre.h"
 #include "OgreApplicationContext.h"
 #include "GameObject.h"
+#include "CameraController.h"
+#include "InputManager.h"
 #include "InputHandler.h"
+#include <vector>
 
 using namespace Ogre;
 using namespace OgreBites;
@@ -13,12 +16,24 @@ private:
 public:
     BaseWindow();
     virtual ~BaseWindow() {}
-    void setup();
+    void setup() override;
     SceneManager *sceneManager;
 };
 
 BaseWindow::BaseWindow() : ApplicationContext("Ogre")
 {
+}
+
+void CreateLight(Ogre::SceneManager* sceneManager, Ogre::Vector3 dir,String name) 
+{
+    Light* directionalLight = sceneManager->createLight("DirectionalLight"+name);
+    directionalLight->setType(Light::LT_DIRECTIONAL);
+    directionalLight->setDiffuseColour(ColourValue(1, 1, 1));
+    directionalLight->setSpecularColour(ColourValue(1, 1, 1));
+    SceneNode* dirLightNode = sceneManager->getRootSceneNode()->createChildSceneNode();
+    dirLightNode->setPosition(Ogre::Vector3(0,0,0));
+    dirLightNode->setDirection(Vector3(dir));
+    dirLightNode->attachObject(directionalLight);
 }
 
 void BaseWindow::setup()
@@ -35,24 +50,38 @@ void BaseWindow::setup()
     mainCamera->setAutoAspectRatio(true);
     SceneNode *mainCameraNode = sceneManager->getRootSceneNode()->createChildSceneNode();
     mainCameraNode->attachObject(mainCamera);
-    mainCameraNode->setPosition(0, 0, 10);
+    mainCameraNode->setPosition(0, 0 , 300);
+    mainCameraNode->lookAt(Ogre::Vector3(0, 0, 0), Ogre::Node::TransformSpace::TS_WORLD);
     getRenderWindow()->addViewport(mainCamera);
     sceneManager->setAmbientLight(ColourValue(0, 0, 0));
     sceneManager->setShadowTechnique(ShadowTechnique::SHADOWTYPE_STENCIL_ADDITIVE);
-    Light *directionalLight = sceneManager->createLight("DirectionalLight");
-    directionalLight->setType(Light::LT_DIRECTIONAL);
-    directionalLight->setDiffuseColour(ColourValue::White);
-    directionalLight->setSpecularColour(0, 0, 0);
-    SceneNode *dirLightNode = sceneManager->getRootSceneNode()->createChildSceneNode();
-    dirLightNode->setDirection(Vector3(0, 0, 0));
-    dirLightNode->attachObject(directionalLight);
-    GameObject *redCube = new GameObject(sceneManager, "RedCube");
+  
+    //kossher start
+    CreateLight(sceneManager,Ogre::Vector3(0,0,0),"1");
+    CreateLight(sceneManager, Ogre::Vector3(1, 1, 1),"2");
+    CreateLight(sceneManager, Ogre::Vector3(1, 1, -1),"3");
+    CreateLight(sceneManager, Ogre::Vector3(1, -1, 1),"4");
+    CreateLight(sceneManager, Ogre::Vector3(-1, -1, -1),"5");
+    CreateLight(sceneManager, Ogre::Vector3(-1, -1, 1),"6");
+    CreateLight(sceneManager, Ogre::Vector3(-1, 1, 1),"7");
+    CreateLight(sceneManager, Ogre::Vector3(-1,1,-1),"8");
+    //kossher end
+
+    GameObject *ogreHead = new GameObject(sceneManager, "ogrehead");
     Ogre::SceneNode *attachmentNode = sceneManager->getRootSceneNode()->createChildSceneNode();
-    root->addFrameListener(redCube);
-    // Set the desired resource group first and then load the Scene
-    attachmentNode->loadChildren("Sample.scene");
-    InputHandler *input = new InputHandler();
-    addInputListener(input);
+    root->addFrameListener(ogreHead);
+
+    InputManager* inputManager = new InputManager();
+    root->addFrameListener(inputManager);
+
+    std::vector<Input*> inputs = inputManager->GetInputs();
+    for (auto input : inputs) 
+    {
+        addInputListener(input);
+    }
+
+    CameraController* cameraController = new CameraController(mainCamera, mainCameraNode, inputManager);
+    root->addFrameListener(cameraController);
 }
 
 int main()

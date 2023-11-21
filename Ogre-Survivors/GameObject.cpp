@@ -15,9 +15,9 @@ GameObject::GameObject(Ogre::SceneManager* sceneManager, Ogre::String name)
 
 bool GameObject::frameStarted(const Ogre::FrameEvent& event)
 {
-	float speed = 0.01;
+	/*float speed = 0.01;
 	Vector3 position = node->getPosition();
-	node->setPosition(position.x + speed, position.y, position.z + speed);
+	node->setPosition(position.x + speed, position.y, position.z + speed);*/
 	return true;
 }
 
