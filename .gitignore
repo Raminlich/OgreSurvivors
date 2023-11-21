@@ -1,6 +1,5 @@
 .vs
 .idea
-*.sln
 *.tlog
 *.lastbuildstate
 *.vcxproj.FileListAbsolute.txt
